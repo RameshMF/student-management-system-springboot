@@ -13,12 +13,8 @@ import net.javaguides.sms.service.StudentService;
 @Controller
 public class StudentController {
 	
+	@Autowired
 	private StudentService studentService;
-
-	public StudentController(StudentService studentService) {
-		super();
-		this.studentService = studentService;
-	}
 	
 	// handler method to handle list students and return mode and view
 	@GetMapping("/students")
@@ -47,23 +43,6 @@ public class StudentController {
 	public String editStudentForm(@PathVariable Long id, Model model) {
 		model.addAttribute("student", studentService.getStudentById(id));
 		return "edit_student";
-	}
-
-	@PostMapping("/students/{id}")
-	public String updateStudent(@PathVariable Long id,
-			@ModelAttribute("student") Student student,
-			Model model) {
-		
-		// get student from database by id
-		Student existingStudent = studentService.getStudentById(id);
-		existingStudent.setId(id);
-		existingStudent.setFirstName(student.getFirstName());
-		existingStudent.setLastName(student.getLastName());
-		existingStudent.setEmail(student.getEmail());
-		
-		// save updated student object
-		studentService.updateStudent(existingStudent);
-		return "redirect:/students";		
 	}
 	
 	// handler method to handle delete student request
